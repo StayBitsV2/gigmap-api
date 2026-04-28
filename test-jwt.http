@@ -1,0 +1,63 @@
+### GigMap API - JWT Authentication Tests
+### Use with REST Client extension in VS Code or similar HTTP client
+
+@baseUrl = http://localhost:8080
+@token = 
+
+### 1. Register new user (without name field)
+POST {{baseUrl}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@gigmap.com",
+  "username": "testuser",
+  "password": "password123",
+  "role": "USER"
+}
+
+### 1b. Register another user (without name field)
+POST {{baseUrl}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "test2@gigmap.com",
+  "username": "testuser2",
+  "password": "password123",
+  "role": "USER"
+}
+# @name login
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "emailOrUsername": "test@gigmap.com",
+  "password": "password123"
+}
+
+### 3. Login (get token) from login response
+@token = {{login.response.body.token}}
+
+### 4. Get all users WITHOUT token (should return 401 Unauthorized)
+GET {{baseUrl}}/api/v1/users
+
+### 5. Get all users WITH token (should work)
+GET {{baseUrl}}/api/v1/users
+Authorization: Bearer {{token}}
+
+### 6. Get user by ID WITH token
+GET {{baseUrl}}/api/v1/users/1
+Authorization: Bearer {{token}}
+
+### 7. Update user WITH token
+PUT {{baseUrl}}/api/v1/users/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "email": "newemail@gigmap.com",
+  "username": "newusername"
+}
+
+### 8. Test with invalid token (should return 403 Forbidden)
+GET {{baseUrl}}/api/v1/users
+Authorization: Bearer invalid_token_here
