@@ -1,5 +1,6 @@
 package com.staybits.gigmapapi.communities.domain.model.aggregates;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.staybits.gigmapapi.authentication.domain.model.aggregates.User;
@@ -34,8 +35,8 @@ public class Community extends AuditableAbstractAggregateRoot<Community> {
     private List<User> members;
 
     public Community() {
-        this.posts = List.of();
-        this.members = List.of();
+        this.posts = new ArrayList<>();
+        this.members = new ArrayList<>();
     }
 
     public Community(CreateCommunityCommand command) {
