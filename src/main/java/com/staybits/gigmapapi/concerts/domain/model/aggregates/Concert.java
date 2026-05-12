@@ -8,6 +8,7 @@ import com.staybits.gigmapapi.concerts.domain.model.valueobjects.ConcertStatus;
 import com.staybits.gigmapapi.concerts.domain.model.valueobjects.Genre;
 import com.staybits.gigmapapi.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Concert extends AuditableAbstractAggregateRoot<Concert> {
     private String title;
 
     @NotNull
+    @FutureOrPresent
     @Column(nullable = false)
     private LocalDateTime datehour;
 

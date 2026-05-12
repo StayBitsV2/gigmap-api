@@ -13,9 +13,15 @@ import jakarta.annotation.PostConstruct;
 @Service
 public class FirebaseConfig {
 
+    // Change it to new
+    // FileInputStream("/etc/secrets/firebase-service-account.json"); before
+    // production
+    // Change it to new
+    // FileInputStream("src/main/resources/firebase-service-account.json"); when
+    // development
     @PostConstruct
     public void initialize() throws IOException {
-        FileInputStream serviceAccount = new FileInputStream("src/main/resources/firebase-service-account.json");
+        FileInputStream serviceAccount = new FileInputStream("/etc/secrets/firebase-service-account.json");
 
         FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))

@@ -104,7 +104,7 @@ class RelatedEventIntegrationTest {
         Platform platform = platformRepository.save(new Platform("Platform " + uniqueSuffix, "http://platform.img"));
         Concert concert = concertRepository.save(new Concert("Concert", LocalDateTime.now().plusDays(10), "Desc", "Img",
                 venue, ConcertStatus.PUBLICADO, artist, Genre.ROCK, platform));
-        RelatedEvent event = relatedEventRepository.save(new RelatedEvent(concert, "Event", LocalDateTime.now(), "Desc",
+        RelatedEvent event = relatedEventRepository.save(new RelatedEvent(concert, "Event", LocalDateTime.now().plusDays(5), "Desc",
                 EventType.PREVIA, venue, ConcertStatus.PUBLICADO, artist));
 
         // Act
@@ -127,7 +127,7 @@ class RelatedEventIntegrationTest {
         Platform platform = platformRepository.save(new Platform("Platform " + uniqueSuffix, "http://platform.img"));
         Concert concert = concertRepository.save(new Concert("Concert", LocalDateTime.now().plusDays(10), "Desc", "Img",
                 venue, ConcertStatus.PUBLICADO, artist, Genre.ROCK, platform));
-        RelatedEvent event = relatedEventRepository.save(new RelatedEvent(concert, "Old Title", LocalDateTime.now(),
+        RelatedEvent event = relatedEventRepository.save(new RelatedEvent(concert, "Old Title", LocalDateTime.now().plusDays(5),
                 "Desc", EventType.PREVIA, venue, ConcertStatus.PUBLICADO, artist));
 
         VenueResource venueResource = new VenueResource("New Venue", "New Address", new BigDecimal("11.0"),

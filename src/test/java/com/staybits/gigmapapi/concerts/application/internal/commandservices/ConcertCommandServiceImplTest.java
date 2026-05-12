@@ -101,6 +101,33 @@ BigDecimal latitud = new BigDecimal(100);
     }
 
     @Test
+    void Test_CreateConcert_WhenVenueAndTimeConflict_ShouldThrowException() {
+        LocalDateTime now = LocalDateTime.now();
+        CreateConcertCommand command = new CreateConcertCommand(
+                "Concierto Conflictivo",
+                now,
+                "Descripcion",
+                "img",
+                venue,
+                ConcertStatus.PUBLICADO,
+                1L,
+                Genre.ROCK,
+                platform
+        );
+
+        when(userRepository.findById(1L))
+                .thenReturn(Optional.of(artist));
+
+        when(venueRepository.findByName("Estadio Nacional"))
+                .thenReturn(Optional.of(venue));
+
+        when(concertRepository.existsByDatehourAndVenue(now, venue))
+                .thenReturn(true);
+
+        assertThrows(IllegalArgumentException.class, () -> concertCommandServiceImpl.handle(command));
+    }
+
+    @Test
     void Test_UpdateConcert() {
 
         Concert concert = new Concert(
@@ -137,6 +164,43 @@ BigDecimal latitud = new BigDecimal(100);
         var result = concertCommandServiceImpl.handle(command);
 
         assertEquals("New Concert", result.getTitle());
+    }
+
+    @Test
+    void Test_UpdateConcert_WhenVenueAndTimeConflict_ShouldThrowException() {
+        LocalDateTime now = LocalDateTime.now();
+        Concert concert = new Concert(
+                "Old Concert",
+                now,
+                "Old Desc",
+                "img",
+                venue,
+                ConcertStatus.PUBLICADO,
+                artist,
+                Genre.ROCK,
+                platform
+        );
+
+        UpdateConcertCommand command = new UpdateConcertCommand(
+                1L,
+                "New Concert",
+                now,
+                "New Desc",
+                "newimg",
+                venue,
+                ConcertStatus.CANCELADO
+        );
+
+        when(concertRepository.findById(1L))
+                .thenReturn(Optional.of(concert));
+
+        when(venueRepository.findByName("Estadio Nacional"))
+                .thenReturn(Optional.of(venue));
+
+        when(concertRepository.existsByDatehourAndVenueAndIdNot(now, venue, 1L))
+                .thenReturn(true);
+
+        assertThrows(IllegalArgumentException.class, () -> concertCommandServiceImpl.handle(command));
     }
 
     @Test

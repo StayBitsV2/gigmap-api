@@ -24,6 +24,9 @@ public record CreateRelatedEventResource(
         if (datehour == null) {
             throw new IllegalArgumentException("datehour cannot be null");
         }
+        if (datehour.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("datehour cannot be in the past");
+        }
         if (descripcion == null || descripcion.isBlank()) {
             throw new IllegalArgumentException("descripcion cannot be null or blank");
         }

@@ -167,4 +167,67 @@ class ConcertIntegrationTest {
         assertEquals("New Concert Title", updatedConcert.get().getTitle());
         assertEquals(ConcertStatus.ENCURSO, updatedConcert.get().getStatus());
     }
+
+    @Test
+    void testCreateConcert_WhenVenueAndTimeConflict_ShouldReturnBadRequest() {
+        // Arrange
+        String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
+        User artist = userRepository.save(
+                new User("artist-" + uniqueSuffix + "@example.com", "artist-" + uniqueSuffix, "Artist", Role.ARTIST));
+
+        LocalDateTime concertTime = LocalDateTime.now().plusDays(20);
+        Venue venue = venueRepository.save(
+                new Venue("Shared Venue " + uniqueSuffix, new BigDecimal("10.0"), new BigDecimal("20.0"), "Address", 100));
+        Platform platform = platformRepository.save(new Platform("Platform " + uniqueSuffix, "http://platform.img"));
+        
+        // Create first concert
+        concertRepository.save(new Concert("First Concert", concertTime, "Desc", "Img",
+                venue, ConcertStatus.PUBLICADO, artist, Genre.ROCK, platform));
+
+        VenueResource venueResource = new VenueResource("Shared Venue " + uniqueSuffix, "Address", new BigDecimal("10.0"),
+                new BigDecimal("20.0"), 100);
+        PlatformResource platformResource = new PlatformResource("Platform " + uniqueSuffix, "http://platform.img");
+        CreateConcertResource resource = new CreateConcertResource(
+                "Second Concert",
+                "Description",
+                "http://concert.img",
+                concertTime,
+                venueResource,
+                "ROCK",
+                "PUBLICADO",
+                platformResource,
+                artist.getId());
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> concertsController.createConcert(resource));
+    }
+
+    @Test
+    void testCreateConcertWithPastDate() {
+        // Arrange
+        String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
+        User artist = userRepository.save(
+                new User("artist-" + uniqueSuffix + "@example.com", "artist-" + uniqueSuffix, "Artist", Role.ARTIST));
+
+        VenueResource venueResource = new VenueResource("Venue " + uniqueSuffix, "Address", new BigDecimal("10.0"),
+                new BigDecimal("20.0"), 100);
+        PlatformResource platformResource = new PlatformResource("Platform " + uniqueSuffix, "http://platform.img");
+        
+        // Use a past date
+        LocalDateTime pastDate = LocalDateTime.now().minusDays(1);
+        
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            new CreateConcertResource(
+                "Concert " + uniqueSuffix,
+                "Description",
+                "http://concert.img",
+                pastDate,
+                venueResource,
+                "ROCK",
+                "PUBLICADO",
+                platformResource,
+                artist.getId());
+        });
+    }
 }

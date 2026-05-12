@@ -26,6 +26,9 @@ public record CreateConcertResource(
         if (date == null) {
             throw new IllegalArgumentException("date cannot be null");
         }
+        if (date.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("date cannot be in the past");
+        }
         if (venue == null || venue.name() == null || venue.name().isBlank() || venue.address() == null || venue.address().isBlank()) {
             throw new IllegalArgumentException("venue cannot be null and must have name and address");
         }

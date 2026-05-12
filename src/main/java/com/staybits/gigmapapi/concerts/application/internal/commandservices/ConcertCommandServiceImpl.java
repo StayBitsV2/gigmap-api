@@ -44,6 +44,11 @@ public class ConcertCommandServiceImpl implements ConcertCommandService {
         var venue = venueRepository.findByName(command.venue().getName())
                 .orElseGet(() -> venueRepository.save(command.venue()));
 
+        // Check if a concert already exists at the same time and venue
+        if (concertRepository.existsByDatehourAndVenue(command.datehour(), venue)) {
+            throw new IllegalArgumentException("A concert is already scheduled at this venue and time");
+        }
+
         // Find Platform by name or create new one
         var platform = platformRepository.findByName(command.platform().getName())
                 .orElseGet(() -> platformRepository.save(command.platform()));
@@ -79,6 +84,11 @@ public class ConcertCommandServiceImpl implements ConcertCommandService {
         // Find Venue by name or create new one
         var venue = venueRepository.findByName(command.venue().getName())
                 .orElseGet(() -> venueRepository.save(command.venue()));
+
+        // Check if another concert already exists at the same time and venue
+        if (concertRepository.existsByDatehourAndVenueAndIdNot(command.datehour(), venue, command.id())) {
+            throw new IllegalArgumentException("A concert is already scheduled at this venue and time");
+        }
 
         var concert = existingConcert.get();
         concert.setTitle(command.title());
