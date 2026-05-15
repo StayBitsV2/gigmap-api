@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
 import lombok.Getter;
 import lombok.Setter;
 import java.math.BigDecimal;
@@ -36,6 +38,8 @@ public class Venue extends AuditableModel {
     private String direccion;
     
     @NotNull
+    @Min(value = 5000, message = "Capacity must be at least 5000")
+    @Max(value = 80000, message = "Capacity must be at most 80000")
     @Column(nullable = false)
     private Integer capacidad;
     

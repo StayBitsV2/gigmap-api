@@ -54,7 +54,7 @@ class RelatedEventCommandServiceImplTest {
     BigDecimal latitud = new BigDecimal(100);
     BigDecimal longitud = new BigDecimal(100);
 
-    Venue venue = new Venue("Estadio Nacional",latitud,longitud, "Lima",50);
+    Venue venue = new Venue("Estadio Nacional",latitud,longitud, "Lima",5000);
     Platform platform = new Platform("YouTube", "img");
 
     User user = new User(

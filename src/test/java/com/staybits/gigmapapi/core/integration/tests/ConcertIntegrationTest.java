@@ -59,7 +59,7 @@ class ConcertIntegrationTest {
                 new User("artist-" + uniqueSuffix + "@example.com", "artist-" + uniqueSuffix, "Artist", Role.ARTIST));
 
         VenueResource venueResource = new VenueResource("Venue " + uniqueSuffix, "Address", new BigDecimal("10.0"),
-                new BigDecimal("20.0"), 100);
+                new BigDecimal("20.0"), 5000);
         PlatformResource platformResource = new PlatformResource("Platform " + uniqueSuffix, "http://platform.img");
         CreateConcertResource resource = new CreateConcertResource(
                 "Concert " + uniqueSuffix,
@@ -94,7 +94,7 @@ class ConcertIntegrationTest {
         User artist = userRepository.save(
                 new User("artist-" + uniqueSuffix + "@example.com", "artist-" + uniqueSuffix, "Artist", Role.ARTIST));
         Venue venue = venueRepository.save(
-                new Venue("Venue " + uniqueSuffix, new BigDecimal("10.0"), new BigDecimal("20.0"), "Address", 100));
+                new Venue("Venue " + uniqueSuffix, new BigDecimal("10.0"), new BigDecimal("20.0"), "Address", 5000));
         Platform platform = platformRepository.save(new Platform("Platform " + uniqueSuffix, "http://platform.img"));
         concertRepository.save(new Concert("Concert " + uniqueSuffix, LocalDateTime.now().plusDays(10), "Desc", "Img",
                 venue, ConcertStatus.PUBLICADO, artist, Genre.ROCK, platform));
@@ -115,7 +115,7 @@ class ConcertIntegrationTest {
         User artist = userRepository.save(
                 new User("artist-" + uniqueSuffix + "@example.com", "artist-" + uniqueSuffix, "Artist", Role.ARTIST));
         Venue venue = venueRepository.save(
-                new Venue("Venue " + uniqueSuffix, new BigDecimal("10.0"), new BigDecimal("20.0"), "Address", 100));
+                new Venue("Venue " + uniqueSuffix, new BigDecimal("10.0"), new BigDecimal("20.0"), "Address", 5000));
         Platform platform = platformRepository.save(new Platform("Platform " + uniqueSuffix, "http://platform.img"));
         Concert concert = concertRepository
                 .save(new Concert("Concert " + uniqueSuffix, LocalDateTime.now().plusDays(10), "Desc", "Img", venue,
@@ -137,13 +137,13 @@ class ConcertIntegrationTest {
         User artist = userRepository.save(
                 new User("artist-" + uniqueSuffix + "@example.com", "artist-" + uniqueSuffix, "Artist", Role.ARTIST));
         Venue venue = venueRepository.save(
-                new Venue("Venue " + uniqueSuffix, new BigDecimal("10.0"), new BigDecimal("20.0"), "Address", 100));
+                new Venue("Venue " + uniqueSuffix, new BigDecimal("10.0"), new BigDecimal("20.0"), "Address", 5000));
         Platform platform = platformRepository.save(new Platform("Platform " + uniqueSuffix, "http://platform.img"));
         Concert concert = concertRepository.save(new Concert("Old Concert", LocalDateTime.now().plusDays(10), "Desc",
                 "Img", venue, ConcertStatus.PUBLICADO, artist, Genre.ROCK, platform));
 
         VenueResource venueResource = new VenueResource("New Venue", "New Address", new BigDecimal("11.0"),
-                new BigDecimal("21.0"), 200);
+                new BigDecimal("21.0"), 6000);
         UpdateConcertResource updateResource = new UpdateConcertResource(
                 concert.getId(),
                 "New Concert Title",
@@ -177,7 +177,7 @@ class ConcertIntegrationTest {
 
         LocalDateTime concertTime = LocalDateTime.now().plusDays(20);
         Venue venue = venueRepository.save(
-                new Venue("Shared Venue " + uniqueSuffix, new BigDecimal("10.0"), new BigDecimal("20.0"), "Address", 100));
+                new Venue("Shared Venue " + uniqueSuffix, new BigDecimal("10.0"), new BigDecimal("20.0"), "Address", 5000));
         Platform platform = platformRepository.save(new Platform("Platform " + uniqueSuffix, "http://platform.img"));
         
         // Create first concert
@@ -185,7 +185,7 @@ class ConcertIntegrationTest {
                 venue, ConcertStatus.PUBLICADO, artist, Genre.ROCK, platform));
 
         VenueResource venueResource = new VenueResource("Shared Venue " + uniqueSuffix, "Address", new BigDecimal("10.0"),
-                new BigDecimal("20.0"), 100);
+                new BigDecimal("20.0"), 5000);
         PlatformResource platformResource = new PlatformResource("Platform " + uniqueSuffix, "http://platform.img");
         CreateConcertResource resource = new CreateConcertResource(
                 "Second Concert",
@@ -210,7 +210,7 @@ class ConcertIntegrationTest {
                 new User("artist-" + uniqueSuffix + "@example.com", "artist-" + uniqueSuffix, "Artist", Role.ARTIST));
 
         VenueResource venueResource = new VenueResource("Venue " + uniqueSuffix, "Address", new BigDecimal("10.0"),
-                new BigDecimal("20.0"), 100);
+                new BigDecimal("20.0"), 5000);
         PlatformResource platformResource = new PlatformResource("Platform " + uniqueSuffix, "http://platform.img");
         
         // Use a past date
