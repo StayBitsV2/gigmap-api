@@ -2,6 +2,9 @@ package com.staybits.gigmapapi.authentication.application.internal.commandservic
 
 import com.staybits.gigmapapi.authentication.domain.model.aggregates.User;
 import com.staybits.gigmapapi.authentication.domain.model.commands.UpdateUserCommand;
+import com.staybits.gigmapapi.authentication.domain.model.commands.FollowArtistCommand;
+import com.staybits.gigmapapi.authentication.domain.model.commands.UnfollowArtistCommand;
+import org.springframework.transaction.annotation.Transactional;
 import com.staybits.gigmapapi.authentication.domain.services.UserCommandService;
 import com.staybits.gigmapapi.authentication.infrastructure.persistence.jpa.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -44,5 +47,31 @@ public class UserCommandServiceImpl implements UserCommandService {
         } catch (Exception e) {
             throw new IllegalArgumentException("Error while updating user: %s".formatted(e.getMessage()));
         }
+    }
+
+    @Override
+    @Transactional
+    public void handle(FollowArtistCommand command) {
+        var fanOpt = userRepository.findById(command.fanId());
+        var artistOpt = userRepository.findById(command.artistId());
+        if (fanOpt.isEmpty() || artistOpt.isEmpty())
+            throw new IllegalArgumentException("Fan or artist not found");
+        var fan = fanOpt.get();
+        var artist = artistOpt.get();
+        fan.follow(artist);
+        userRepository.save(fan);
+    }
+
+    @Override
+    @Transactional
+    public void handle(UnfollowArtistCommand command) {
+        var fanOpt = userRepository.findById(command.fanId());
+        var artistOpt = userRepository.findById(command.artistId());
+        if (fanOpt.isEmpty() || artistOpt.isEmpty())
+            throw new IllegalArgumentException("Fan or artist not found");
+        var fan = fanOpt.get();
+        var artist = artistOpt.get();
+        fan.unfollow(artist);
+        userRepository.save(fan);
     }
 }
