@@ -32,7 +32,7 @@ public class ArtistStatsQueryService {
         }
 
         var today = LocalDate.now();
-        var formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        var formatter = DateTimeFormatter.ofPattern("dd MMM", new java.util.Locale("es"));
         var weeks = new ArrayList<WeeklyStatsResource>();
         boolean hasData = false;
 
