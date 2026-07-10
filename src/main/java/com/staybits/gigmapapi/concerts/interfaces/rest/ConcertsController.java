@@ -1,5 +1,8 @@
 package com.staybits.gigmapapi.concerts.interfaces.rest;
 
+import com.staybits.gigmapapi.authentication.domain.model.aggregates.User;
+import com.staybits.gigmapapi.authentication.interfaces.rest.resources.UserResource;
+import com.staybits.gigmapapi.authentication.interfaces.rest.transform.UserResourceFromEntityAssembler;
 import com.staybits.gigmapapi.concerts.domain.model.commands.DeleteConcertCommand;
 import com.staybits.gigmapapi.concerts.domain.model.queries.GetAllConcertsAttendedByUserIdQuery;
 import com.staybits.gigmapapi.concerts.domain.model.queries.GetAllConcertsQuery;
@@ -206,6 +209,20 @@ public class ConcertsController {
 
         var concertResource = ConcertResourceFromEntityAssembler.toResourceFromEntity(concert);
         return ResponseEntity.ok(concertResource);
+    }
+
+    @GetMapping("/{id}/attendees")
+    @Operation(summary = "Get concert attendees", description = "Retrieve all attendees of a concert")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Attendees found"),
+            @ApiResponse(responseCode = "404", description = "Concert not found")
+    })
+    public ResponseEntity<List<UserResource>> getAttendees(@PathVariable Long id) {
+        List<User> users = concertQueryService.getAttendeesByConcertId(id);
+        List<UserResource> resources = users.stream()
+            .map(UserResourceFromEntityAssembler::toResourceFromEntity)
+            .toList();
+        return ResponseEntity.ok(resources);
     }
 
     @GetMapping("/attended/{userId}")

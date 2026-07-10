@@ -1,5 +1,6 @@
 package com.staybits.gigmapapi.concerts.domain.services;
 
+import com.staybits.gigmapapi.authentication.domain.model.aggregates.User;
 import com.staybits.gigmapapi.concerts.domain.model.aggregates.Concert;
 import com.staybits.gigmapapi.concerts.domain.model.queries.GetAllConcertsAttendedByUserIdQuery;
 import com.staybits.gigmapapi.concerts.domain.model.queries.GetAllConcertsQuery;
@@ -20,4 +21,6 @@ public interface ConcertQueryService {
   List<Concert> handle(GetConcertsByArtistQuery query);
 
   List<Concert> handle(GetAllConcertsAttendedByUserIdQuery query);
+
+  List<User> getAttendeesByConcertId(Long concertId);
 }

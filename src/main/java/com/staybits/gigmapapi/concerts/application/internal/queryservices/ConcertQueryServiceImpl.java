@@ -1,5 +1,6 @@
 package com.staybits.gigmapapi.concerts.application.internal.queryservices;
 
+import com.staybits.gigmapapi.authentication.domain.model.aggregates.User;
 import com.staybits.gigmapapi.concerts.domain.model.aggregates.Concert;
 import com.staybits.gigmapapi.concerts.domain.model.queries.GetAllConcertsAttendedByUserIdQuery;
 import com.staybits.gigmapapi.concerts.domain.model.queries.GetAllConcertsQuery;
@@ -10,6 +11,7 @@ import com.staybits.gigmapapi.concerts.domain.services.ConcertQueryService;
 import com.staybits.gigmapapi.concerts.infrastructure.persistence.jpa.repositories.ConcertRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,5 +53,12 @@ public class ConcertQueryServiceImpl implements ConcertQueryService {
     @Override
     public List<Concert> handle(GetAllConcertsAttendedByUserIdQuery query) {
         return this.concertRepository.findByAttendees_Id(query.userId());
+    }
+
+    @Override
+    public List<User> getAttendeesByConcertId(Long concertId) {
+        Concert concert = concertRepository.findById(concertId)
+            .orElseThrow(() -> new IllegalArgumentException("Concert not found: " + concertId));
+        return new ArrayList<>(concert.getAttendees());
     }
 }

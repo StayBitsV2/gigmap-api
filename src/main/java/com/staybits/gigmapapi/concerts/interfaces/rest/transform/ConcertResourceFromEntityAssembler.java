@@ -1,6 +1,7 @@
 package com.staybits.gigmapapi.concerts.interfaces.rest.transform;
 
 import com.staybits.gigmapapi.authentication.domain.model.aggregates.User;
+import com.staybits.gigmapapi.authentication.interfaces.rest.transform.UserResourceFromEntityAssembler;
 import com.staybits.gigmapapi.concerts.domain.model.aggregates.Concert;
 import com.staybits.gigmapapi.concerts.interfaces.rest.resources.ConcertResource;
 
@@ -30,7 +31,8 @@ public class ConcertResourceFromEntityAssembler {
             entity.getGenre() != null ? entity.getGenre().name() : null,
             PlatformAssembler.toResourceFromEntity(entity.getPlatform()),
             VenueAssembler.toResourceFromEntity(entity.getVenue()),
-            toListFromHashSet(entity.getAttendees())
+            toListFromHashSet(entity.getAttendees()),
+            UserResourceFromEntityAssembler.toResourceFromEntity(entity.getUser())
         );
     }
 

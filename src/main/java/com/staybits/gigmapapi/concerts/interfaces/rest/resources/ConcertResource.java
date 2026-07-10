@@ -1,5 +1,6 @@
 package com.staybits.gigmapapi.concerts.interfaces.rest.resources;
 
+import com.staybits.gigmapapi.authentication.interfaces.rest.resources.UserResource;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +15,7 @@ public record ConcertResource(
     String genre,
     PlatformResource platform,
     VenueResource venue,
-    List<Long> attendees
+    List<Long> attendees,
+    UserResource artist
 ) {
 }
