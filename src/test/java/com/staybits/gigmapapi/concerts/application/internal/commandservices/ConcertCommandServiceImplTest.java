@@ -16,7 +16,6 @@ import com.staybits.gigmapapi.concerts.infrastructure.persistence.jpa.repositori
 import com.staybits.gigmapapi.concerts.infrastructure.persistence.jpa.repositories.VenueRepository;
 import com.staybits.gigmapapi.concerts.domain.model.entities.Platform;
 import com.staybits.gigmapapi.concerts.domain.model.entities.Venue;
-import com.staybits.gigmapapi.concerts.domain.model.valueobjects.Genre;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,237 +33,223 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ConcertCommandServiceImplTest {
 
-    @Mock
-    ConcertRepository concertRepository;
+        @Mock
+        ConcertRepository concertRepository;
 
-    @Mock
-    UserRepository userRepository;
+        @Mock
+        UserRepository userRepository;
 
-    @Mock
-    VenueRepository venueRepository;
+        @Mock
+        VenueRepository venueRepository;
 
-    @Mock
-    PlatformRepository platformRepository;
+        @Mock
+        PlatformRepository platformRepository;
 
-    @InjectMocks
-    ConcertCommandServiceImpl concertCommandServiceImpl;
-BigDecimal latitud = new BigDecimal(100);
-    BigDecimal longitud = new BigDecimal(100);
+        @InjectMocks
+        ConcertCommandServiceImpl concertCommandServiceImpl;
+        BigDecimal latitud = new BigDecimal(100);
+        BigDecimal longitud = new BigDecimal(100);
 
-    Venue venue = new Venue("Estadio Nacional",latitud,longitud, "Lima",5000);
-    Platform platform = new Platform("YouTube", "img");
+        Venue venue = new Venue("Estadio Nacional", latitud, longitud, "Lima", 5000);
+        Platform platform = new Platform("YouTube", "img");
 
-    User artist = new User(
-            "artist@test.com",
-            "artist1",
-            "Roberto",
-            Role.ARTIST
-    );
+        User artist = new User(
+                        "artist@test.com",
+                        "artist1",
+                        "Roberto",
+                        Role.ARTIST);
 
-    User fan = new User(
-            "fan@test.com",
-            "fan1",
-            "Alan",
-            Role.FAN
-    );
+        User fan = new User(
+                        "fan@test.com",
+                        "fan1",
+                        "Alan",
+                        Role.FAN);
 
-    @Test
-    void Test_CreateConcert() {
+        @Test
+        void Test_CreateConcert() {
 
-        CreateConcertCommand command = new CreateConcertCommand(
-                "Concierto Test",
-                LocalDateTime.now(),
-                "Descripcion",
-                "img",
-                venue,
-                ConcertStatus.PUBLICADO,
-                1L,
-                Genre.ROCK,
-                platform
-        );
+                CreateConcertCommand command = new CreateConcertCommand(
+                                "Concierto Test",
+                                LocalDateTime.now(),
+                                "Descripcion",
+                                "img",
+                                venue,
+                                ConcertStatus.PUBLICADO,
+                                1L,
+                                Genre.ROCK,
+                                platform);
 
-        when(userRepository.findById(1L))
-                .thenReturn(Optional.of(artist));
+                when(userRepository.findById(1L))
+                                .thenReturn(Optional.of(artist));
 
-        when(venueRepository.findByName("Estadio Nacional"))
-                .thenReturn(Optional.of(venue));
+                when(venueRepository.findByName("Estadio Nacional"))
+                                .thenReturn(Optional.of(venue));
 
-        when(platformRepository.findByName("YouTube"))
-                .thenReturn(Optional.of(platform));
+                when(platformRepository.findByName("YouTube"))
+                                .thenReturn(Optional.of(platform));
 
-        when(concertRepository.save(any(Concert.class)))
-                .thenAnswer(i -> i.getArgument(0));
+                when(concertRepository.save(any(Concert.class)))
+                                .thenAnswer(i -> i.getArgument(0));
 
-        var result = concertCommandServiceImpl.handle(command);
+                var result = concertCommandServiceImpl.handle(command);
 
-        assertEquals("Concierto Test", result.getTitle());
-    }
+                assertEquals("Concierto Test", result.getTitle());
+        }
 
-    @Test
-    void Test_CreateConcert_WhenVenueAndTimeConflict_ShouldThrowException() {
-        LocalDateTime now = LocalDateTime.now();
-        CreateConcertCommand command = new CreateConcertCommand(
-                "Concierto Conflictivo",
-                now,
-                "Descripcion",
-                "img",
-                venue,
-                ConcertStatus.PUBLICADO,
-                1L,
-                Genre.ROCK,
-                platform
-        );
+        @Test
+        void Test_CreateConcert_WhenVenueAndTimeConflict_ShouldThrowException() {
+                LocalDateTime now = LocalDateTime.now();
+                CreateConcertCommand command = new CreateConcertCommand(
+                                "Concierto Conflictivo",
+                                now,
+                                "Descripcion",
+                                "img",
+                                venue,
+                                ConcertStatus.PUBLICADO,
+                                1L,
+                                Genre.ROCK,
+                                platform);
 
-        when(userRepository.findById(1L))
-                .thenReturn(Optional.of(artist));
+                when(userRepository.findById(1L))
+                                .thenReturn(Optional.of(artist));
 
-        when(venueRepository.findByName("Estadio Nacional"))
-                .thenReturn(Optional.of(venue));
+                when(venueRepository.findByName("Estadio Nacional"))
+                                .thenReturn(Optional.of(venue));
 
-        when(concertRepository.existsByDatehourAndVenue(now, venue))
-                .thenReturn(true);
+                when(concertRepository.existsByDatehourAndVenue(now, venue))
+                                .thenReturn(true);
 
-        assertThrows(IllegalArgumentException.class, () -> concertCommandServiceImpl.handle(command));
-    }
+                assertThrows(IllegalArgumentException.class, () -> concertCommandServiceImpl.handle(command));
+        }
 
-    @Test
-    void Test_UpdateConcert() {
+        @Test
+        void Test_UpdateConcert() {
 
-        Concert concert = new Concert(
-                "Old Concert",
-                LocalDateTime.now(),
-                "Old Desc",
-                "img",
-                venue,
-                ConcertStatus.PUBLICADO,
-                artist,
-                Genre.ROCK,
-                platform
-        );
+                Concert concert = new Concert(
+                                "Old Concert",
+                                LocalDateTime.now(),
+                                "Old Desc",
+                                "img",
+                                venue,
+                                ConcertStatus.PUBLICADO,
+                                artist,
+                                Genre.ROCK,
+                                platform);
 
-        UpdateConcertCommand command = new UpdateConcertCommand(
-                1L,
-                "New Concert",
-                LocalDateTime.now(),
-                "New Desc",
-                "newimg",
-                venue,
-                ConcertStatus.CANCELADO
-        );
+                UpdateConcertCommand command = new UpdateConcertCommand(
+                                1L,
+                                "New Concert",
+                                LocalDateTime.now(),
+                                "New Desc",
+                                "newimg",
+                                venue,
+                                ConcertStatus.CANCELADO);
 
-        when(concertRepository.findById(1L))
-                .thenReturn(Optional.of(concert));
+                when(concertRepository.findById(1L))
+                                .thenReturn(Optional.of(concert));
 
-        when(venueRepository.findByName("Estadio Nacional"))
-                .thenReturn(Optional.of(venue));
+                when(venueRepository.findByName("Estadio Nacional"))
+                                .thenReturn(Optional.of(venue));
 
-        when(concertRepository.save(any(Concert.class)))
-                .thenAnswer(i -> i.getArgument(0));
+                when(concertRepository.save(any(Concert.class)))
+                                .thenAnswer(i -> i.getArgument(0));
 
-        var result = concertCommandServiceImpl.handle(command);
+                var result = concertCommandServiceImpl.handle(command);
 
-        assertEquals("New Concert", result.getTitle());
-    }
+                assertEquals("New Concert", result.getTitle());
+        }
 
-    @Test
-    void Test_UpdateConcert_WhenVenueAndTimeConflict_ShouldThrowException() {
-        LocalDateTime now = LocalDateTime.now();
-        Concert concert = new Concert(
-                "Old Concert",
-                now,
-                "Old Desc",
-                "img",
-                venue,
-                ConcertStatus.PUBLICADO,
-                artist,
-                Genre.ROCK,
-                platform
-        );
+        @Test
+        void Test_UpdateConcert_WhenVenueAndTimeConflict_ShouldThrowException() {
+                LocalDateTime now = LocalDateTime.now();
+                Concert concert = new Concert(
+                                "Old Concert",
+                                now,
+                                "Old Desc",
+                                "img",
+                                venue,
+                                ConcertStatus.PUBLICADO,
+                                artist,
+                                Genre.ROCK,
+                                platform);
 
-        UpdateConcertCommand command = new UpdateConcertCommand(
-                1L,
-                "New Concert",
-                now,
-                "New Desc",
-                "newimg",
-                venue,
-                ConcertStatus.CANCELADO
-        );
+                UpdateConcertCommand command = new UpdateConcertCommand(
+                                1L,
+                                "New Concert",
+                                now,
+                                "New Desc",
+                                "newimg",
+                                venue,
+                                ConcertStatus.CANCELADO);
 
-        when(concertRepository.findById(1L))
-                .thenReturn(Optional.of(concert));
+                when(concertRepository.findById(1L))
+                                .thenReturn(Optional.of(concert));
 
-        when(venueRepository.findByName("Estadio Nacional"))
-                .thenReturn(Optional.of(venue));
+                when(venueRepository.findByName("Estadio Nacional"))
+                                .thenReturn(Optional.of(venue));
 
-        when(concertRepository.existsByDatehourAndVenueAndIdNot(now, venue, 1L))
-                .thenReturn(true);
+                when(concertRepository.existsByDatehourAndVenueAndIdNot(now, venue, 1L))
+                                .thenReturn(true);
 
-        assertThrows(IllegalArgumentException.class, () -> concertCommandServiceImpl.handle(command));
-    }
+                assertThrows(IllegalArgumentException.class, () -> concertCommandServiceImpl.handle(command));
+        }
 
-    @Test
-    void Test_DeleteConcert() {
+        @Test
+        void Test_DeleteConcert() {
 
-        Concert concert = new Concert();
+                Concert concert = new Concert();
 
-        DeleteConcertCommand command =
-                new DeleteConcertCommand(1L);
+                DeleteConcertCommand command = new DeleteConcertCommand(1L);
 
-        when(concertRepository.findById(1L))
-                .thenReturn(Optional.of(concert));
+                when(concertRepository.findById(1L))
+                                .thenReturn(Optional.of(concert));
 
-        boolean result =
-                concertCommandServiceImpl.handle(command);
+                boolean result = concertCommandServiceImpl.handle(command);
 
-        assertTrue(result);
-    }
+                assertTrue(result);
+        }
 
-    @Test
-    void Test_AddAttendee() {
+        @Test
+        void Test_AddAttendee() {
 
-        Concert concert = new Concert();
+                Concert concert = new Concert();
 
-        AddAttendeeCommand command =
-                new AddAttendeeCommand(1L, 2L);
+                AddAttendeeCommand command = new AddAttendeeCommand(1L, 2L);
 
-        when(concertRepository.findById(1L))
-                .thenReturn(Optional.of(concert));
+                when(concertRepository.findById(1L))
+                                .thenReturn(Optional.of(concert));
 
-        when(userRepository.findById(2L))
-                .thenReturn(Optional.of(fan));
+                when(userRepository.findById(2L))
+                                .thenReturn(Optional.of(fan));
 
-        when(concertRepository.save(any(Concert.class)))
-                .thenAnswer(i -> i.getArgument(0));
+                when(concertRepository.save(any(Concert.class)))
+                                .thenAnswer(i -> i.getArgument(0));
 
-        var result =
-                concertCommandServiceImpl.handle(command);
+                var result = concertCommandServiceImpl.handle(command);
 
-        assertTrue(result.getAttendees().contains(fan));
-    }
+                assertTrue(result.getAttendees().contains(fan));
+        }
 
-    @Test
-    void Test_RemoveAttendee() {
+        @Test
+        void Test_RemoveAttendee() {
 
-        Concert concert = new Concert();
+                Concert concert = new Concert();
 
-        concert.getAttendees().add(fan);
+                concert.getAttendees().add(fan);
 
-        RemoveAttendeeCommand command =
-                new RemoveAttendeeCommand(1L, 2L);
+                RemoveAttendeeCommand command = new RemoveAttendeeCommand(1L, 2L);
 
-        when(concertRepository.findById(1L))
-                .thenReturn(Optional.of(concert));
+                when(concertRepository.findById(1L))
+                                .thenReturn(Optional.of(concert));
 
-        when(userRepository.findById(2L))
-                .thenReturn(Optional.of(fan));
+                when(userRepository.findById(2L))
+                                .thenReturn(Optional.of(fan));
 
-        when(concertRepository.save(any(Concert.class)))
-                .thenAnswer(i -> i.getArgument(0));
+                when(concertRepository.save(any(Concert.class)))
+                                .thenAnswer(i -> i.getArgument(0));
 
-        var result =
-                concertCommandServiceImpl.handle(command);
+                var result = concertCommandServiceImpl.handle(command);
 
-        assertFalse(result.getAttendees().contains(fan));
-    }
+                assertFalse(result.getAttendees().contains(fan));
+        }
 }
