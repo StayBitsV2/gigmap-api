@@ -1,3 +1,3 @@
 package com.staybits.gigmapapi.communities.domain.model.queries;
 
-public record GetThreadByIdQuery(Long postId) {}
+public record GetThreadByIdQuery(Long threadId) {}

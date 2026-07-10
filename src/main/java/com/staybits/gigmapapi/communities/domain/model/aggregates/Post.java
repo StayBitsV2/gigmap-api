@@ -20,8 +20,6 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Post extends AuditableAbstractAggregateRoot<Post> {
-    private String title;
-
     private String content;
 
     private String imageUrl;
@@ -44,7 +42,6 @@ public class Post extends AuditableAbstractAggregateRoot<Post> {
     }
 
     public Post(CreatePostCommand command, Community community, User user) {
-        this.title = command.title();
         this.content = command.content();
         this.imageUrl = command.imageUrl();
         this.community = community;

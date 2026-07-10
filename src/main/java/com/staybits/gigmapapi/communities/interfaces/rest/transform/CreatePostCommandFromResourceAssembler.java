@@ -5,6 +5,6 @@ import com.staybits.gigmapapi.communities.interfaces.rest.resources.CreatePostRe
 
 public class CreatePostCommandFromResourceAssembler {
     public static CreatePostCommand toCommandFromResource(CreatePostResource resource) {
-        return new CreatePostCommand(resource.content(), resource.imageUrl(), resource.communityId(), resource.userId(), resource.title());
+        return new CreatePostCommand(resource.content(), resource.imageUrl(), resource.communityId(), resource.userId());
     }
 }

@@ -1,5 +1,5 @@
 package com.staybits.gigmapapi.communities.interfaces.rest.resources;
 
-public record UpdatePostResource(String content, String image, String title) {
+public record UpdatePostResource(String content, String image) {
     
 }

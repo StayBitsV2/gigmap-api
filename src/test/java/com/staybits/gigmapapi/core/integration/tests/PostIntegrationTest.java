@@ -49,7 +49,7 @@ class PostIntegrationTest {
         Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Img", "Desc", "ROCK")));
         User user = userRepository.save(new User("user-" + uniqueSuffix + "@example.com", "user-" + uniqueSuffix, "Name", Role.FAN));
 
-        CreatePostResource resource = new CreatePostResource("Content", "http://image.url", community.getId(), user.getId(), "Title");
+        CreatePostResource resource = new CreatePostResource("Content", "http://image.url", community.getId(), user.getId());
 
         // Act
         ResponseEntity<PostResource> response = postsController.createPost(resource);
@@ -71,7 +71,7 @@ class PostIntegrationTest {
         String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
         Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Img", "Desc", "ROCK")));
         User user = userRepository.save(new User("user-" + uniqueSuffix + "@example.com", "user-" + uniqueSuffix, "Name", Role.FAN));
-        postRepository.save(new Post(new CreatePostCommand("Post 1", "Img", community.getId(), user.getId(), "Title"), community, user));
+        postRepository.save(new Post(new CreatePostCommand("Post 1", "Img", community.getId(), user.getId()), community, user));
 
         // Act
         ResponseEntity<List<PostResource>> response = postsController.getAllPosts(null);
@@ -88,9 +88,9 @@ class PostIntegrationTest {
         String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
         Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Img", "Desc", "ROCK")));
         User user = userRepository.save(new User("user-" + uniqueSuffix + "@example.com", "user-" + uniqueSuffix, "Name", Role.FAN));
-        Post post = postRepository.save(new Post(new CreatePostCommand("Old Content", "Old Img", community.getId(), user.getId(), "Title"), community, user));
+        Post post = postRepository.save(new Post(new CreatePostCommand("Old Content", "Old Img", community.getId(), user.getId()), community, user));
 
-        UpdatePostResource updateResource = new UpdatePostResource("New Content", "New Img", "Title");
+        UpdatePostResource updateResource = new UpdatePostResource("New Content", "New Img");
 
         // Act
         ResponseEntity<PostResource> response = postsController.updatePost(post.getId(), updateResource);
@@ -113,7 +113,7 @@ class PostIntegrationTest {
         Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Img", "Desc", "ROCK")));
         User author = userRepository.save(new User("author-" + uniqueSuffix + "@example.com", "author-" + uniqueSuffix, "Author", Role.FAN));
         User liker = userRepository.save(new User("liker-" + uniqueSuffix + "@example.com", "liker-" + uniqueSuffix, "Liker", Role.FAN));
-        Post post = postRepository.save(new Post(new CreatePostCommand("Content", "Img", community.getId(), author.getId(), "Title"), community, author));
+        Post post = postRepository.save(new Post(new CreatePostCommand("Content", "Img", community.getId(), author.getId()), community, author));
 
         // Act
         ResponseEntity<Void> response = postsController.likePost(post.getId(), liker.getId());

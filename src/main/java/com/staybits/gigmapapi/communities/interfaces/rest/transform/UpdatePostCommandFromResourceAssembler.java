@@ -5,6 +5,6 @@ import com.staybits.gigmapapi.communities.interfaces.rest.resources.UpdatePostRe
 
 public class UpdatePostCommandFromResourceAssembler {
     public static UpdatePostCommand toCommandFromResource(Long id, UpdatePostResource resource) {
-        return new UpdatePostCommand(id, resource.content(), resource.image(), resource.title());
+        return new UpdatePostCommand(id, resource.content(), resource.image());
     }
 }

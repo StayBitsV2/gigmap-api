@@ -6,24 +6,24 @@ import com.staybits.gigmapapi.communities.domain.model.commands.AddCommentComman
 import com.staybits.gigmapapi.communities.domain.model.entities.Comment;
 import com.staybits.gigmapapi.communities.domain.services.CommentCommandService;
 import com.staybits.gigmapapi.communities.infrastructure.persistence.jpa.repositories.CommentRepository;
-import com.staybits.gigmapapi.communities.infrastructure.persistence.jpa.repositories.PostRepository;
+import com.staybits.gigmapapi.communities.infrastructure.persistence.jpa.repositories.ThreadRepository;
 
 @Service
 public class CommentCommandServiceImpl implements CommentCommandService {
-    private final PostRepository postRepository;
+    private final ThreadRepository threadRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
-    public CommentCommandServiceImpl(PostRepository postRepository, UserRepository userRepository,
+    public CommentCommandServiceImpl(ThreadRepository threadRepository, UserRepository userRepository,
             CommentRepository commentRepository) {
-        this.postRepository = postRepository;
+        this.threadRepository = threadRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
     }
 
     @Override
     public Comment handle(AddCommentCommand command) {
-        var thread = postRepository.findById(command.threadId())
+        var thread = threadRepository.findById(command.threadId())
                 .orElseThrow(
                         () -> new IllegalArgumentException("Thread with id " + command.threadId() + " does not exist"));
         var user = userRepository.findById(command.userId())

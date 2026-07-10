@@ -3,28 +3,27 @@ package com.staybits.gigmapapi.communities.application.internal.commandservices;
 import org.springframework.stereotype.Service;
 
 import com.staybits.gigmapapi.authentication.infrastructure.persistence.jpa.repositories.UserRepository;
-import com.staybits.gigmapapi.communities.domain.model.aggregates.Post;
-import com.staybits.gigmapapi.communities.domain.model.commands.CreatePostCommand;
+import com.staybits.gigmapapi.communities.domain.model.aggregates.Thread;
 import com.staybits.gigmapapi.communities.domain.model.commands.CreateThreadCommand;
 import com.staybits.gigmapapi.communities.domain.services.ForumCommandService;
 import com.staybits.gigmapapi.communities.infrastructure.persistence.jpa.repositories.CommunityRepository;
-import com.staybits.gigmapapi.communities.infrastructure.persistence.jpa.repositories.PostRepository;
+import com.staybits.gigmapapi.communities.infrastructure.persistence.jpa.repositories.ThreadRepository;
 
 @Service
 public class ForumCommandServiceImpl implements ForumCommandService {
     private final CommunityRepository communityRepository;
-    private final PostRepository postRepository;
+    private final ThreadRepository threadRepository;
     private final UserRepository userRepository;
 
-    public ForumCommandServiceImpl(CommunityRepository communityRepository, PostRepository postRepository,
+    public ForumCommandServiceImpl(CommunityRepository communityRepository, ThreadRepository threadRepository,
             UserRepository userRepository) {
         this.communityRepository = communityRepository;
-        this.postRepository = postRepository;
+        this.threadRepository = threadRepository;
         this.userRepository = userRepository;
     }
 
     @Override
-    public Post handle(CreateThreadCommand command) {
+    public Thread handle(CreateThreadCommand command) {
         var community = communityRepository.findById(command.communityId())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Forum with id " + command.communityId() + " does not exist"));
@@ -32,12 +31,10 @@ public class ForumCommandServiceImpl implements ForumCommandService {
                 .orElseThrow(
                         () -> new IllegalArgumentException("User with id " + command.userId() + " does not exist"));
 
-        var createPostCommand = new CreatePostCommand(command.content(), command.imageUrl(), command.communityId(),
-                command.userId(), command.title());
-        var post = new Post(createPostCommand, community, user);
+        var thread = new Thread(command.title(), command.content(), command.imageUrl(), community, user);
 
         try {
-            return postRepository.save(post);
+            return threadRepository.save(thread);
         } catch (Exception e) {
             throw new IllegalArgumentException("Failed to create thread: " + e.getMessage(), e);
         }

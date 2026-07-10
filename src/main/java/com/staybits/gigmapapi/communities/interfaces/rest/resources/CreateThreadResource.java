@@ -1,3 +1,11 @@
 package com.staybits.gigmapapi.communities.interfaces.rest.resources;
 
-public record CreateThreadResource(String title, String content, String imageUrl, Long communityId, Long userId) {}
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record CreateThreadResource(
+    String title,
+    String content,
+    @JsonProperty(required = false) String imageUrl,
+    Long communityId,
+    Long userId
+) {}

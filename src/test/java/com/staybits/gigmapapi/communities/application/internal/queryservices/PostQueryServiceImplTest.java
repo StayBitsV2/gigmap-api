@@ -60,8 +60,7 @@ class PostQueryServiceImplTest {
                     "Contenido post",
                     "imgpost",
                     1L,
-                    1L,
-                    "Title"
+                    1L
             );
 
     Post post = new Post(createPostCommand, community, user);
