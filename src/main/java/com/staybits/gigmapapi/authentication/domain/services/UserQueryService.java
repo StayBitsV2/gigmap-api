@@ -6,6 +6,7 @@ import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserByIdQue
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserByUsernameQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserDetailsByIdQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUsersByCommunityIdQuery;
+import com.staybits.gigmapapi.authentication.domain.model.queries.IsUserFollowingArtistQuery;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,4 +42,11 @@ public interface UserQueryService {
     List<User> handle(GetUsersByCommunityIdQuery query);
 
     Optional<User> handle(GetUserDetailsByIdQuery query);
+
+    /**
+     * Check if a user is following an artist
+     * @param query the {@link IsUserFollowingArtistQuery} query
+     * @return true if the user is following the artist, false otherwise
+     */
+    boolean handle(IsUserFollowingArtistQuery query);
 }

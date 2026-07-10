@@ -5,6 +5,9 @@ import com.staybits.gigmapapi.authentication.domain.model.queries.GetAllUsersQue
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserByIdQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserDetailsByIdQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUsersByCommunityIdQuery;
+import com.staybits.gigmapapi.authentication.domain.model.queries.IsUserFollowingArtistQuery;
+import com.staybits.gigmapapi.authentication.domain.model.commands.FollowArtistCommand;
+import com.staybits.gigmapapi.authentication.domain.model.commands.UnfollowArtistCommand;
 import com.staybits.gigmapapi.authentication.domain.services.UserCommandService;
 import com.staybits.gigmapapi.authentication.domain.services.UserQueryService;
 import com.staybits.gigmapapi.authentication.interfaces.rest.resources.UpdateUserResource;
@@ -129,5 +132,49 @@ public class UsersController {
         var updatedUserEntity = updatedUser.get();
         var updatedUserResource = UserResourceFromEntityAssembler.toResourceFromEntity(updatedUserEntity);
         return ResponseEntity.ok(updatedUserResource);
+    }
+
+    @PutMapping("/{userId}/follow/{artistId}")
+    @Operation(summary = "Follow artist", description = "A user (fan) follows an artist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Artist followed successfully"),
+            @ApiResponse(responseCode = "400", description = "Fan or artist not found")
+    })
+    public ResponseEntity<Void> followArtist(@PathVariable Long userId, @PathVariable Long artistId) {
+        try {
+            var followCommand = new FollowArtistCommand(userId, artistId);
+            userCommandService.handle(followCommand);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{userId}/unfollow/{artistId}")
+    @Operation(summary = "Unfollow artist", description = "A user unfollows an artist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Artist unfollowed successfully"),
+            @ApiResponse(responseCode = "400", description = "Fan or artist not found")
+    })
+    public ResponseEntity<Void> unfollowArtist(@PathVariable Long userId, @PathVariable Long artistId) {
+        try {
+            var unfollowCommand = new UnfollowArtistCommand(userId, artistId);
+            userCommandService.handle(unfollowCommand);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/{userId}/following/{artistId}")
+    @Operation(summary = "Check if user is following artist", description = "Returns whether the user is following the artist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returns true or false"),
+            @ApiResponse(responseCode = "404", description = "User or artist not found")
+    })
+    public ResponseEntity<Boolean> isFollowingArtist(@PathVariable Long userId, @PathVariable Long artistId) {
+        var query = new IsUserFollowingArtistQuery(userId, artistId);
+        boolean isFollowing = userQueryService.handle(query);
+        return ResponseEntity.ok(isFollowing);
     }
 }

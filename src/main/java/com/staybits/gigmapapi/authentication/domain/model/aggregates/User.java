@@ -74,12 +74,21 @@ public class User extends AuditableAbstractAggregateRoot<User> {
     )
     private List<Post> likes;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_following_artists",
+            joinColumns = @JoinColumn(name = "fan_id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id")
+    )
+    private List<User> followingArtists;
+
     public User() {
         this.communitiesJoined = new ArrayList<>();
         this.upcomingConcerts = new ArrayList<>();
         this.postsDone = new ArrayList<>();
         this.createdConcerts = new ArrayList<>();
         this.likes = new ArrayList<>();
+        this.followingArtists = new ArrayList<>();
     }
 
     public User(String email, String username, String name, Role role) {
@@ -115,4 +124,35 @@ public class User extends AuditableAbstractAggregateRoot<User> {
         this.descripcion = descripcion;
         return this;
     }
+
+    public void follow(User artist) {
+        if (artist == null) {
+            throw new IllegalArgumentException("Artist cannot be null");
+        }
+
+        if (this.equals(artist)) {
+            throw new IllegalArgumentException("User cannot follow itself");
+        }
+
+        if (!this.followingArtists.contains(artist)) {
+            this.followingArtists.add(artist);
+        }
+    }
+
+    public void unfollow(User artist) {
+        if (artist == null) {
+            throw new IllegalArgumentException("Artist cannot be null");
+        }
+
+        this.followingArtists.remove(artist);
+    }
+
+    public boolean isFollowing(User artist) {
+        if (artist == null) {
+            return false;
+        }
+
+        return this.followingArtists.contains(artist);
+    }
+
 }

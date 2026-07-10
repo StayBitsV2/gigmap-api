@@ -6,6 +6,7 @@ import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserByIdQue
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserByUsernameQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserDetailsByIdQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUsersByCommunityIdQuery;
+import com.staybits.gigmapapi.authentication.domain.model.queries.IsUserFollowingArtistQuery;
 import com.staybits.gigmapapi.authentication.domain.services.UserQueryService;
 import com.staybits.gigmapapi.authentication.infrastructure.persistence.jpa.repositories.UserRepository;
 
@@ -72,5 +73,25 @@ public class UserQueryServiceImpl implements UserQueryService {
     @Override
     public Optional<User> handle(GetUserDetailsByIdQuery query) {
         return userRepository.findById(query.userId());
+    }
+
+    /**
+     * Check if a user is following an artist.
+     * @param query the {@link IsUserFollowingArtistQuery} query
+     * @return true if the user is following the artist, false otherwise
+     */
+    @Override
+    public boolean handle(IsUserFollowingArtistQuery query) {
+        var fanOpt = userRepository.findById(query.fanId());
+        var artistOpt = userRepository.findById(query.artistId());
+
+        if (fanOpt.isEmpty() || artistOpt.isEmpty()) {
+            return false;
+        }
+
+        var fan = fanOpt.get();
+        var artist = artistOpt.get();
+
+        return fan.isFollowing(artist);
     }
 }

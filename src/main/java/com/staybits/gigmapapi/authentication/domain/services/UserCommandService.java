@@ -1,5 +1,6 @@
 package com.staybits.gigmapapi.authentication.domain.services;
-
+import com.staybits.gigmapapi.authentication.domain.model.commands.FollowArtistCommand;
+import com.staybits.gigmapapi.authentication.domain.model.commands.UnfollowArtistCommand;
 import com.staybits.gigmapapi.authentication.domain.model.aggregates.User;
 import com.staybits.gigmapapi.authentication.domain.model.commands.UpdateUserCommand;
 
@@ -18,5 +19,9 @@ public interface UserCommandService {
      * @param command the {@link UpdateUserCommand} command
      * @return an {@link Optional} of {@link User} entity
      */
+    void handle(FollowArtistCommand command);
+
+    void handle(UnfollowArtistCommand command);
+
     Optional<User> handle(UpdateUserCommand command);
 }
