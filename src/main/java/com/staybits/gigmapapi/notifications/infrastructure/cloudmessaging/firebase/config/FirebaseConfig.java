@@ -21,17 +21,15 @@ public class FirebaseConfig {
     // development
     @PostConstruct
     public void initialize() throws IOException {
-        try (FileInputStream serviceAccount =
-                     new FileInputStream("src/main/resources/firebase-service-account.json")) {
+        FileInputStream serviceAccount = new FileInputStream("/etc/secrets/firebase-service-account.json");
 
-            FirebaseOptions options = FirebaseOptions.builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .build();
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .build();
 
-            if (FirebaseApp.getApps().isEmpty()) {
-                FirebaseApp.initializeApp(options);
-                System.out.println("FirebaseConfig initialized successfully");
-            }
+        if (FirebaseApp.getApps().isEmpty()) {
+            FirebaseApp.initializeApp(options);
+            System.out.println("FirebaseConfig initialized successfully");
         }
     }
 }
