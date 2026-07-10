@@ -26,6 +26,7 @@ public class Community extends AuditableAbstractAggregateRoot<Community> {
     private String name;
     private String imageUrl;
     private String description;
+    private String genre;
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
@@ -44,5 +45,6 @@ public class Community extends AuditableAbstractAggregateRoot<Community> {
         this.name = command.name();
         this.description = command.description();
         this.imageUrl = command.imageUrl();
+        this.genre = command.genre();
     }
 }

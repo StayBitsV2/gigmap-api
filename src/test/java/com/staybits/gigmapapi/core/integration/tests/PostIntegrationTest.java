@@ -46,10 +46,10 @@ class PostIntegrationTest {
     void testCreatePost() {
         // Arrange
         String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
-        Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Desc", "Img")));
+        Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Img", "Desc", "ROCK")));
         User user = userRepository.save(new User("user-" + uniqueSuffix + "@example.com", "user-" + uniqueSuffix, "Name", Role.FAN));
 
-        CreatePostResource resource = new CreatePostResource("Content", "http://image.url", community.getId(), user.getId());
+        CreatePostResource resource = new CreatePostResource("Content", "http://image.url", community.getId(), user.getId(), "Title");
 
         // Act
         ResponseEntity<PostResource> response = postsController.createPost(resource);
@@ -69,9 +69,9 @@ class PostIntegrationTest {
     void testGetAllPosts() {
         // Arrange
         String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
-        Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Desc", "Img")));
+        Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Img", "Desc", "ROCK")));
         User user = userRepository.save(new User("user-" + uniqueSuffix + "@example.com", "user-" + uniqueSuffix, "Name", Role.FAN));
-        postRepository.save(new Post(new CreatePostCommand("Post 1", "Img", community.getId(), user.getId()), community, user));
+        postRepository.save(new Post(new CreatePostCommand("Post 1", "Img", community.getId(), user.getId(), "Title"), community, user));
 
         // Act
         ResponseEntity<List<PostResource>> response = postsController.getAllPosts(null);
@@ -86,11 +86,11 @@ class PostIntegrationTest {
     void testUpdatePost() {
         // Arrange
         String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
-        Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Desc", "Img")));
+        Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Img", "Desc", "ROCK")));
         User user = userRepository.save(new User("user-" + uniqueSuffix + "@example.com", "user-" + uniqueSuffix, "Name", Role.FAN));
-        Post post = postRepository.save(new Post(new CreatePostCommand("Old Content", "Old Img", community.getId(), user.getId()), community, user));
+        Post post = postRepository.save(new Post(new CreatePostCommand("Old Content", "Old Img", community.getId(), user.getId(), "Title"), community, user));
 
-        UpdatePostResource updateResource = new UpdatePostResource("New Content", "New Img");
+        UpdatePostResource updateResource = new UpdatePostResource("New Content", "New Img", "Title");
 
         // Act
         ResponseEntity<PostResource> response = postsController.updatePost(post.getId(), updateResource);
@@ -110,10 +110,10 @@ class PostIntegrationTest {
     void testLikePost() {
         // Arrange
         String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
-        Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Desc", "Img")));
+        Community community = communityRepository.save(new Community(new CreateCommunityCommand("Comm-" + uniqueSuffix, "Img", "Desc", "ROCK")));
         User author = userRepository.save(new User("author-" + uniqueSuffix + "@example.com", "author-" + uniqueSuffix, "Author", Role.FAN));
         User liker = userRepository.save(new User("liker-" + uniqueSuffix + "@example.com", "liker-" + uniqueSuffix, "Liker", Role.FAN));
-        Post post = postRepository.save(new Post(new CreatePostCommand("Content", "Img", community.getId(), author.getId()), community, author));
+        Post post = postRepository.save(new Post(new CreatePostCommand("Content", "Img", community.getId(), author.getId(), "Title"), community, author));
 
         // Act
         ResponseEntity<Void> response = postsController.likePost(post.getId(), liker.getId());

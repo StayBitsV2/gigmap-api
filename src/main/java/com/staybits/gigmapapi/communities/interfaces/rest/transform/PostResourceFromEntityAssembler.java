@@ -12,6 +12,6 @@ public class PostResourceFromEntityAssembler {
     }
 
     public static PostResource toResourceFromEntity(Post post) {
-        return new PostResource(post.getId(), post.getCommunity().getId(), post.getUser().getId(), post.getContent(), post.getImageUrl(), getLikes(post.getLikedBy()));
+        return new PostResource(post.getId(), post.getCommunity().getId(), post.getUser().getId(), post.getTitle(), post.getContent(), post.getImageUrl(), getLikes(post.getLikedBy()), 0);
     }
 }

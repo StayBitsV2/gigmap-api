@@ -55,7 +55,8 @@ class PostCommandServiceImplTest {
                         "Hola mundo",
                         "img",
                         1L,
-                        1L
+                        1L,
+                        "Title"
                 );
 
         when(communityRepository.findById(1L))
@@ -155,7 +156,8 @@ class PostCommandServiceImplTest {
                         "Contenido viejo",
                         "img1",
                         1L,
-                        1L
+                        1L,
+                        "Title"
                 );
 
         Post post = new Post(createCommand, community, user);
@@ -164,7 +166,8 @@ class PostCommandServiceImplTest {
                 new UpdatePostCommand(
                         1L,
                         "Contenido nuevo",
-                        "img2"
+                        "img2",
+                        "Title"
                 );
 
         when(postRepository.findById(1L))
@@ -198,7 +201,8 @@ class PostCommandServiceImplTest {
                         "Contenido",
                         "img",
                         1L,
-                        1L
+                        1L,
+                        "Title"
                 );
 
         Post post = new Post(createCommand, community, user);

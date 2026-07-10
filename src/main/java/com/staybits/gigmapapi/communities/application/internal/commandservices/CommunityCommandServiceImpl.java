@@ -51,6 +51,7 @@ public class CommunityCommandServiceImpl implements CommunityCommandService {
 
             community.setName(command.name());
             community.setDescription(command.description());
+            community.setGenre(command.genre());
             community.setUpdatedAt(LocalDateTime.now());
 
             try {

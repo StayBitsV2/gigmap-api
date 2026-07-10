@@ -5,6 +5,6 @@ import com.staybits.gigmapapi.communities.interfaces.rest.resources.CreateCommun
 
 public class CreateCommunityCommandFromResourceAssembler {
     public static CreateCommunityCommand toCommandFromResource(CreateCommunityResource resource) {
-        return new CreateCommunityCommand(resource.name(), resource.image(), resource.description());
+        return new CreateCommunityCommand(resource.name(), resource.image(), resource.description(), resource.genre());
     }
 }

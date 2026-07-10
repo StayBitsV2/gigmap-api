@@ -33,14 +33,16 @@ class CommunityQueryServiceImplTest {
             new CreateCommunityCommand(
                     "Community 1",
                     "img1",
-                    "Descripcion 1"
+                    "Descripcion 1",
+                    "ROCK"
             );
 
     CreateCommunityCommand command2 =
             new CreateCommunityCommand(
                     "Community 2",
                     "img2",
-                    "Descripcion 2"
+                    "Descripcion 2",
+                    "ROCK"
             );
 
     Community community1 = new Community(command1);

@@ -8,4 +8,6 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     boolean existsByName(String name);
 
     List<Community> findByMembers_Id(Long userId);
+    List<Community> findByGenreNotNull();
+    java.util.Optional<Community> findByIdAndGenreNotNull(Long id);
 }

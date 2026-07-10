@@ -42,7 +42,8 @@ class PostQueryServiceImplTest {
             new CreateCommunityCommand(
                     "Community Test",
                     "img",
-                    "Descripcion"
+                    "Descripcion",
+                    "ROCK"
             );
 
     Community community = new Community(communityCommand);
@@ -59,7 +60,8 @@ class PostQueryServiceImplTest {
                     "Contenido post",
                     "imgpost",
                     1L,
-                    1L
+                    1L,
+                    "Title"
             );
 
     Post post = new Post(createPostCommand, community, user);

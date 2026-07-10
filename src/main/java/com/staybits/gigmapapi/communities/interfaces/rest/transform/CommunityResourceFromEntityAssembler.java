@@ -17,6 +17,6 @@ public class CommunityResourceFromEntityAssembler {
     }
 
     public static CommunityResource toResourceFromEntity(Community entity) {
-        return new CommunityResource(entity.getId(), entity.getName(), entity.getDescription(), entity.getImageUrl(), getPostIds(entity.getPosts()), getMemberIds(entity.getMembers()));
+        return new CommunityResource(entity.getId(), entity.getName(), entity.getDescription(), entity.getImageUrl(), entity.getGenre(), getPostIds(entity.getPosts()), getMemberIds(entity.getMembers()));
     }
 }

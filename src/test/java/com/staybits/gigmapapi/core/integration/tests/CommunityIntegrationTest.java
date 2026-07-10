@@ -40,7 +40,7 @@ class CommunityIntegrationTest {
     void testCreateCommunity() {
         // Arrange
         String uniqueName = "Community-" + UUID.randomUUID().toString().substring(0, 8);
-        CreateCommunityResource resource = new CreateCommunityResource(uniqueName, "Description", "http://image.url");
+        CreateCommunityResource resource = new CreateCommunityResource(uniqueName, "Description", "http://image.url", "ROCK");
 
         // Act
         ResponseEntity<CommunityResource> response = communitiesController.createCommunity(resource);
@@ -60,7 +60,7 @@ class CommunityIntegrationTest {
     void testGetAllCommunities() {
         // Arrange
         String uniqueName = "List-" + UUID.randomUUID().toString().substring(0, 8);
-        Community community = new Community(new CreateCommunityCommand(uniqueName, "Desc", "Img"));
+        Community community = new Community(new CreateCommunityCommand(uniqueName, "Img", "Desc", "ROCK"));
         communityRepository.save(community);
 
         // Act
@@ -77,7 +77,7 @@ class CommunityIntegrationTest {
     void testGetCommunityById() {
         // Arrange
         String uniqueName = "Get-" + UUID.randomUUID().toString().substring(0, 8);
-        Community community = new Community(new CreateCommunityCommand(uniqueName, "Desc", "Img"));
+        Community community = new Community(new CreateCommunityCommand(uniqueName, "Img", "Desc", "ROCK"));
         Community savedCommunity = communityRepository.save(community);
 
         // Act
@@ -94,10 +94,10 @@ class CommunityIntegrationTest {
     void testUpdateCommunity() {
         // Arrange
         String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
-        Community community = new Community(new CreateCommunityCommand("Old-" + uniqueSuffix, "Old Desc", "Old Img"));
+        Community community = new Community(new CreateCommunityCommand("Old-" + uniqueSuffix, "Old Img", "Old Desc", "ROCK"));
         Community savedCommunity = communityRepository.save(community);
 
-        UpdateCommunityResource updateResource = new UpdateCommunityResource("New Name", "New Img", "New Desc");
+        UpdateCommunityResource updateResource = new UpdateCommunityResource("New Name", "New Img", "New Desc", "ROCK");
 
         // Act
         ResponseEntity<CommunityResource> response = communitiesController.updateCommunity(savedCommunity.getId(), updateResource);
@@ -117,7 +117,7 @@ class CommunityIntegrationTest {
     void testJoinCommunity() {
         // Arrange
         String uniqueSuffix = UUID.randomUUID().toString().substring(0, 8);
-        Community community = new Community(new CreateCommunityCommand("Join-" + uniqueSuffix, "Desc", "Img"));
+        Community community = new Community(new CreateCommunityCommand("Join-" + uniqueSuffix, "Img", "Desc", "ROCK"));
         Community savedCommunity = communityRepository.save(community);
 
         User user = new User("join-" + uniqueSuffix + "@example.com", "join-" + uniqueSuffix, "Joiner", Role.FAN);

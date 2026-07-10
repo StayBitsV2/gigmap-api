@@ -28,7 +28,7 @@ class CommunityCommandServiceImplTest {
         UserRepository userRepository;
         @InjectMocks
         CommunityCommandServiceImpl communityCommandServiceImpl;
-        CreateCommunityCommand command = new CreateCommunityCommand("ComunidadTesting", "img", "La mejor");
+        CreateCommunityCommand command = new CreateCommunityCommand("ComunidadTesting", "img", "La mejor", "ROCK");
         Community community = new Community(command);
 
         @Test
@@ -47,8 +47,8 @@ class CommunityCommandServiceImplTest {
                 UpdateCommunityCommand updateCommand = new UpdateCommunityCommand(
                                 1L,
                                 "NuevoNombre",
-                                "img", "NuevaDescripcion"
-
+                                "img", "NuevaDescripcion",
+                                "ROCK"
                 );
 
                 when(communityRepository.findById(1L))
