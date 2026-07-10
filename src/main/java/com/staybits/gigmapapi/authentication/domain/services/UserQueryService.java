@@ -2,6 +2,7 @@ package com.staybits.gigmapapi.authentication.domain.services;
 
 import com.staybits.gigmapapi.authentication.domain.model.aggregates.User;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetAllUsersQuery;
+import com.staybits.gigmapapi.authentication.domain.model.queries.GetFollowedArtistsByUserIdQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserByIdQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserByUsernameQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserDetailsByIdQuery;
@@ -49,4 +50,11 @@ public interface UserQueryService {
      * @return true if the user is following the artist, false otherwise
      */
     boolean handle(IsUserFollowingArtistQuery query);
+
+    /**
+     * Get all artists followed by a user
+     * @param query the {@link GetFollowedArtistsByUserIdQuery} query
+     * @return the list of followed artists
+     */
+    List<User> handle(GetFollowedArtistsByUserIdQuery query);
 }

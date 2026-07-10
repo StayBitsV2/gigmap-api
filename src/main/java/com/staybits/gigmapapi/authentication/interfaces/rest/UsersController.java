@@ -2,6 +2,7 @@ package com.staybits.gigmapapi.authentication.interfaces.rest;
 
 import com.staybits.gigmapapi.authentication.domain.model.aggregates.User;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetAllUsersQuery;
+import com.staybits.gigmapapi.authentication.domain.model.queries.GetFollowedArtistsByUserIdQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserByIdQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserDetailsByIdQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUsersByCommunityIdQuery;
@@ -176,5 +177,20 @@ public class UsersController {
         var query = new IsUserFollowingArtistQuery(userId, artistId);
         boolean isFollowing = userQueryService.handle(query);
         return ResponseEntity.ok(isFollowing);
+    }
+
+    @GetMapping("/{userId}/following")
+    @Operation(summary = "Get followed artists", description = "Returns all artists followed by the user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Followed artists retrieved successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    public ResponseEntity<List<UserResource>> getFollowedArtists(@PathVariable Long userId) {
+        var query = new GetFollowedArtistsByUserIdQuery(userId);
+        var followedArtists = userQueryService.handle(query);
+        var resources = followedArtists.stream()
+            .map(UserResourceFromEntityAssembler::toResourceFromEntity)
+            .toList();
+        return ResponseEntity.ok(resources);
     }
 }

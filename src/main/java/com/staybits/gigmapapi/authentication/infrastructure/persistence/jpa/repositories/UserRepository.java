@@ -2,8 +2,11 @@ package com.staybits.gigmapapi.authentication.infrastructure.persistence.jpa.rep
 
 import com.staybits.gigmapapi.authentication.domain.model.aggregates.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -40,4 +43,12 @@ public interface UserRepository extends JpaRepository<User, Long>
      * @return True if the user exists, false otherwise.
      */
     boolean existsByUsername(String username);
+
+    /**
+     * This method is responsible for finding all artists followed by a user.
+     * @param fanId The user ID.
+     * @return The list of followed artists.
+     */
+    @Query("SELECT a FROM User u JOIN u.followingArtists a WHERE u.id = :fanId")
+    List<User> findFollowingArtistsByFanId(@Param("fanId") Long fanId);
 }

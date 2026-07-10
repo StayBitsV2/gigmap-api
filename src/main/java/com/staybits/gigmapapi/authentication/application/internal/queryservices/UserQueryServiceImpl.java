@@ -2,6 +2,7 @@ package com.staybits.gigmapapi.authentication.application.internal.queryservices
 
 import com.staybits.gigmapapi.authentication.domain.model.aggregates.User;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetAllUsersQuery;
+import com.staybits.gigmapapi.authentication.domain.model.queries.GetFollowedArtistsByUserIdQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserByIdQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserByUsernameQuery;
 import com.staybits.gigmapapi.authentication.domain.model.queries.GetUserDetailsByIdQuery;
@@ -73,6 +74,11 @@ public class UserQueryServiceImpl implements UserQueryService {
     @Override
     public Optional<User> handle(GetUserDetailsByIdQuery query) {
         return userRepository.findById(query.userId());
+    }
+
+    @Override
+    public List<User> handle(GetFollowedArtistsByUserIdQuery query) {
+        return userRepository.findFollowingArtistsByFanId(query.userId());
     }
 
     /**
