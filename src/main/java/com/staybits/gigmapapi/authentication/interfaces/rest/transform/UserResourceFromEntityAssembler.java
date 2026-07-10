@@ -5,6 +5,6 @@ import com.staybits.gigmapapi.authentication.interfaces.rest.resources.UserResou
 
 public class UserResourceFromEntityAssembler {
     public static UserResource toResourceFromEntity(User user) {
-        return new UserResource(user.getId(), user.getEmail(), user.getUsername(), user.getName(), user.getRole().name(), user.getImagenUrl());
+        return new UserResource(user.getId(), user.getEmail(), user.getUsername(), user.getName(), user.getRole().name(), user.getImagenUrl(), user.getBannerUrl(), user.getGeneroMusical(), user.getSitioWeb(), user.getSpotifyUrl(), user.getInstagramUrl(), user.getYoutubeUrl());
     }
 }

@@ -85,7 +85,8 @@ class UserIntegrationTest {
                 "New Name",
                 "ARTIST",
                 "http://image.url",
-                "New description"
+                "New description",
+                null, null, null, null, null, null
         );
 
         // Act

@@ -13,7 +13,13 @@ public class UpdateUserCommandFromResourceAssembler {
             resource.name(),
             resource.role() != null ? Role.valueOf(resource.role()) : null,
             resource.imagenUrl(),
-            resource.descripcion()
+            resource.descripcion(),
+            resource.bannerUrl(),
+            resource.generoMusical(),
+            resource.sitioWeb(),
+            resource.spotifyUrl(),
+            resource.instagramUrl(),
+            resource.youtubeUrl()
         );
     }
 }

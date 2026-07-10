@@ -12,7 +12,13 @@ public class UserDetailsResourceFromEntityAssembler {
             entity.getUsername(),
             entity.getRole().name(),
             entity.getImagenUrl(),
-            entity.getDescripcion()
+            entity.getDescripcion(),
+            entity.getBannerUrl(),
+            entity.getGeneroMusical(),
+            entity.getSitioWeb(),
+            entity.getSpotifyUrl(),
+            entity.getInstagramUrl(),
+            entity.getYoutubeUrl()
         );
     }
 }

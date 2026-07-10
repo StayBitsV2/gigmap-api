@@ -40,8 +40,14 @@ public class UserCommandServiceImpl implements UserCommandService {
         command.name(),
         command.role(),
         command.imagenUrl(),
-        command.descripcion()
-      
+        command.descripcion(),
+        command.bannerUrl(),
+        command.generoMusical(),
+        command.sitioWeb(),
+        command.spotifyUrl(),
+        command.instagramUrl(),
+        command.youtubeUrl()
+       
             ));
             return Optional.of(updatedUser);
         } catch (Exception e) {

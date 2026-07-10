@@ -1,4 +1,4 @@
 package com.staybits.gigmapapi.authentication.interfaces.rest.resources;
 
-public record UserResource(Long id, String email, String username, String name, String role, String image) {
+public record UserResource(Long id, String email, String username, String name, String role, String image, String bannerUrl, String generoMusical, String sitioWeb, String spotifyUrl, String instagramUrl, String youtubeUrl) {
 }

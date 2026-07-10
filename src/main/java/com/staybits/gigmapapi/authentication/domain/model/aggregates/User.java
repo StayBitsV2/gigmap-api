@@ -54,6 +54,30 @@ public class User extends AuditableAbstractAggregateRoot<User> {
     @Column(columnDefinition = "TEXT")
     private String descripcion;
 
+    @Size(max = 500)
+    @Column(name = "banner_url")
+    private String bannerUrl;
+
+    @Size(max = 50)
+    @Column(name = "genero_musical")
+    private String generoMusical;
+
+    @Size(max = 255)
+    @Column(name = "sitio_web")
+    private String sitioWeb;
+
+    @Size(max = 255)
+    @Column(name = "spotify_url")
+    private String spotifyUrl;
+
+    @Size(max = 255)
+    @Column(name = "instagram_url")
+    private String instagramUrl;
+
+    @Size(max = 255)
+    @Column(name = "youtube_url")
+    private String youtubeUrl;
+
     @ManyToMany(mappedBy = "members")
     private List<Community> communitiesJoined;
 
@@ -122,6 +146,22 @@ public class User extends AuditableAbstractAggregateRoot<User> {
         this.role = role;
         this.imagenUrl = imagenUrl;
         this.descripcion = descripcion;
+        return this;
+    }
+
+    public User updateInformation(String email, String username, String name, Role role, String imagenUrl, String descripcion, String bannerUrl, String generoMusical, String sitioWeb, String spotifyUrl, String instagramUrl, String youtubeUrl) {
+        this.email = email;
+        this.username = username;
+        this.name = name;
+        this.role = role;
+        this.imagenUrl = imagenUrl;
+        this.descripcion = descripcion;
+        this.bannerUrl = bannerUrl;
+        this.generoMusical = generoMusical;
+        this.sitioWeb = sitioWeb;
+        this.spotifyUrl = spotifyUrl;
+        this.instagramUrl = instagramUrl;
+        this.youtubeUrl = youtubeUrl;
         return this;
     }
 

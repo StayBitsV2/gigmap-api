@@ -21,7 +21,7 @@ class UserCommandServiceImplTest {
 
     User user = new User("correo@prueba","usuario1","Roberto", Role.FAN);
 
-    UpdateUserCommand command = new UpdateUserCommand(1L,"correo@prueba","usuarioprueba","Robertito", Role.FAN,"","");
+    UpdateUserCommand command = new UpdateUserCommand(1L,"correo@prueba","usuarioprueba","Robertito", Role.FAN,"","",null,null,null,null,null,null);
 
     @Test
     void Test_UserUpdate() {
